@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jdx PAN Form Filler</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <main class="shell">
+    <header class="header">
+      <div class="brand"><span class="logo">JDX</span><div><h1>Jdx PAN Form Filler</h1><p>Automatic photo & signature placement</p></div></div>
+      <span class="tag">ONLINE TOOL</span>
+    </header>
+
+    <section class="intro">
+      <h2>Complete your PAN application</h2>
+      <p>Upload the two-page PAN form, passport photo and signature. Your four JPG files will be prepared automatically.</p>
+    </section>
+
+    {% if error %}<div class="alert">{{ error }}</div>{% endif %}
+
+    <form action="/process" method="post" enctype="multipart/form-data" id="panForm">
+      <section class="card">
+        <label class="upload">
+          <span class="file-icon pdf">PDF</span>
+          <span class="upload-copy"><strong>Two-page PAN application</strong><small>Choose the original PDF form</small><em id="pdfName">No file selected</em></span>
+          <span class="choose">Choose file</span>
+          <input type="file" name="form_pdf" accept=".pdf,application/pdf" required onchange="showName(this,'pdfName')">
+        </label>
+        <label class="upload">
+          <span class="file-icon photo">IMG</span>
+          <span class="upload-copy"><strong>Passport photo</strong><small>JPG, PNG or other common image format</small><em id="photoName">No file selected</em></span>
+          <span class="choose">Choose file</span>
+          <input type="file" name="photo" accept="image/*" required onchange="showName(this,'photoName')">
+        </label>
+        <label class="upload">
+          <span class="file-icon sign">SIGN</span>
+          <span class="upload-copy"><strong>Customer signature</strong><small>JPG, PNG or other common image format</small><em id="signName">No file selected</em></span>
+          <span class="choose">Choose file</span>
+          <input type="file" name="signature" accept="image/*" required onchange="showName(this,'signName')">
+        </label>
+      </section>
+
+      <section class="specs">
+        <div><b>PHOTO</b><span>213 × 213 px · 300 DPI · under 30 KB</span></div>
+        <div><b>SIGNATURE</b><span>Black & white · 600 DPI · under 60 KB</span></div>
+        <div><b>FORM PAGES</b><span>Two high-resolution JPGs · 300 DPI</span></div>
+      </section>
+
+      <button class="submit" type="submit" id="submitBtn">Process PAN application <span>→</span></button>
+      <p class="privacy">Files are processed temporarily and deleted from the server after the download response closes. Do not use this public link for highly sensitive documents unless you trust the hosting provider and have reviewed its privacy settings.</p>
+    </form>
+    <footer>Jdx Print Shop · Jdx PAN Form Filler</footer>
+  </main>
+<script>
+function showName(input, target) {
+  document.getElementById(target).textContent = input.files.length ? input.files[0].name : "No file selected";
+}
+document.getElementById("panForm").addEventListener("submit", function () {
+  const btn = document.getElementById("submitBtn");
+  btn.disabled = true;
+  btn.textContent = "Processing… please wait";
+});
+</script>
+</body>
+</html>
